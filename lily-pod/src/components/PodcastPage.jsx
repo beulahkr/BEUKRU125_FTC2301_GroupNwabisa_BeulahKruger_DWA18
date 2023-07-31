@@ -6,10 +6,10 @@ import './PodcastPage.css';
 import supabase from '../supabase';
 
 const PodcastPage = () => {
-  const podcastPageId = user ? `podcastPage_${user.id}` : 'podcastPage';
-
+  
   const { id } = useParams();
   const { user, favorites, setFavorites, supabase } = useAppContext();
+const podcastPageId = user ? `podcastPage_${user.id}` : 'podcastPage';
 
 
   const [podcast, setPodcast] = useState(null);
@@ -32,32 +32,41 @@ const PodcastPage = () => {
     fetchPodcastData();
   }, [id]); // Fetch the podcast data whenever the id changes
 
-  
 
-const handleToggleFavorite = async (episodeId) => {
-  try {
-    if (favorites.includes(episodeId)) {
-      // If the episode is already in favorites, remove it
-      await supabase
-        .from('favorites')
-        .delete()
-        .eq('user_id', user?.id)
-        .eq('episode_id', episodeId);
+  const handleToggleFavorite = async (seasonNumber, episodeNumber) => {
+    try {
+      const episodeId = podcast?.seasons[seasonNumber -1]?.episodes[episodeNumber-1]?.episode_id;
 
-      setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== episodeId));
-    } else {
-      // If the episode is not in favorites, add it
-      await supabase.from('favorites').insert({
-        user_id: user?.id,
-        episode_id: episodeId,
-      });
+      if (!episodeId) {
+        console.log(seasonNumber, episodeNumber)
+        console.error('Invalid season number or episode number.');
+        return;
+      }
 
-      setFavorites((prevFavorites) => [...prevFavorites, episodeId]);
+      if (favorites.includes(episodeId)) {
+        // If the episode is already in favorites, remove it
+        await supabase
+          .from('favorites')
+          .delete()
+          .eq('user_id', user?.id)
+          .eq('episode_id', episodeId);
+
+        setFavorites((prevFavorites) =>
+          prevFavorites.filter((id) => id !== episodeId)
+        );
+      } else {
+        // If the episode is not in favorites, add it
+        await supabase.from('favorites').insert({
+          user_id: user?.id,
+          episode_id: episodeId,
+        });
+
+        setFavorites((prevFavorites) => [...prevFavorites, episodeId]);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
     }
-  } catch (error) {
-    console.error('Error toggling favorite:', error);
-  }
-};
+  };
 
 
 
@@ -79,32 +88,33 @@ const handleToggleFavorite = async (episodeId) => {
           </button>
         </div>
         {/* Render the seasons and episodes */}
-     {podcast?.seasons?.map((season) => (
-        <div key={season.season_number}>
-          <h2>{season.title}</h2>
-          {showAllEpisodes
-            ? season.episodes.map((episode) => {
-                // Check if the episode is in the user's favorites
-                const isFavorite = favorites.includes(episode.episode);
-
-                return (
-                  <div key={episode.episode}>
-                    <p>{episode.title}</p>
-                    <p>{episode.description}</p>
-                    <audio controls>
-                      <source src={episode.file} type="audio/mpeg" />
-                    </audio>
-                    <button
-                      onClick={() => handleToggleFavorite(episode.episode)}
-                      style={{
-                        color: isFavorite ? 'red' : 'black',
-                      }}
-                    >
-                      {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-                    </button>
-                  </div>
-                );
-              })
+     {podcast?.seasons?.map((season, seasonIndex) => (
+  <div key={season.season}>
+    <h2>{season.title}</h2>
+    {showAllEpisodes
+      ? season.episodes.map((episode, episodeIndex) => (
+          <div key={episode.episode_id}>
+            <p>{episode.title}</p>
+            <p>{episode.description}</p>
+            <audio controls>
+              <source src={episode.file} type="audio/mpeg" />
+            </audio>
+            <button
+              onClick={() => {
+                console.log("Season Index:", seasonIndex);
+                console.log("Episode Index:", episodeIndex);
+                handleToggleFavorite(seasonIndex, episodeIndex);
+              }}
+              style={{
+                color: favorites.includes(episode.episode_id) ? "red" : "black",
+              }}
+            >
+              {favorites.includes(episode.episode_id)
+                ? "Remove from Favorites"
+                : "Add to Favorites"}
+            </button>
+          </div>
+        ))
             : season.episodes
                 .filter((episode) => favorites.includes(episode.episode))
                 .map((episode) => (

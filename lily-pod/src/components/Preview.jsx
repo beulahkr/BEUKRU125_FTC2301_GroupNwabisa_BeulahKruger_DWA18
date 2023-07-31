@@ -15,6 +15,7 @@ const Preview = ({ data, onClick }) => {
         <img src={data.image} alt={data.title} />
         <h3>{data.title}</h3>
       </Link>
+      <p>{data.genres}</p>
       <button onClick={handleShowMore}>Show More</button>
       {showDescription && <p>{data.description}</p>} {/* Conditionally render the description */}
     </div>

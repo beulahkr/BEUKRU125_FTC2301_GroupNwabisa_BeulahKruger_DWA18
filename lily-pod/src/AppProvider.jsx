@@ -3,34 +3,34 @@ import supabase from './supabase';
 
 const AppContext = createContext();
 
-const useAuthSubscription = (callback) => {
-  useEffect(() => {
-    const subscription = supabase.auth.onAuthStateChange(callback);
-
-    return () => {
-      // No need for unsubscribe(), we'll let supabase handle it internally.
-    };
-  }, [callback]);
-};
-
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Use the custom hook to handle auth state changes and set the user state
-  useAuthSubscription((event, session) => {
-    if (event === 'SIGNED_IN') {
-      setUser(session.user);
-      console.log(user)
-    } else {
-      setUser(null);
-    }
-  });
-  // Fetch user's favorite episodes from Supabase when the user changes
   useEffect(() => {
-    const fetchFavoriteEpisodes = async () => {
-      try {
-        if (user) {
+    // Subscribe to changes in auth state
+    const subscription = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        // If the user is signed in, set the user state with the session user
+        setUser(session.user);
+      } else {
+        // If the user is signed out or the session is closed, set the user state to null
+        setUser(null);
+      }
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    // Fetch user's favorite episodes from Supabase when the user changes and user is available
+    if (user) {
+      const fetchFavoriteEpisodes = async () => {
+        try {
           const { data, error } = await supabase
             .from('favorites')
             .select('episode_id')
@@ -41,23 +41,34 @@ export const AppProvider = ({ children }) => {
           } else {
             const favoriteEpisodes = data.map((item) => item.episode_id);
             setFavorites(favoriteEpisodes);
+            setLoading(false);
           }
+        } catch (error) {
+          console.error('Error fetching favorite episodes:', error);
         }
-      } catch (error) {
-        console.error('Error fetching favorite episodes:', error);
-      }
-    };
+      };
 
-    fetchFavoriteEpisodes();
+      fetchFavoriteEpisodes();
+    }
   }, [user]);
 
+  useEffect(() => {
+    // Fetch user's favorite episodes only once on component mount
+    if (user !== null) {
+      setLoading(true);
+    }
+  }, []); // Empty dependency array to run once on component mount
+
+  if (loading) {
+    // Display a loading message or spinner while data is being fetched
+    return <div>Loading...</div>;
+  }
 
   return (
-    <AppContext.Provider value={{ user, setUser, favorites, setFavorites, supabase }}>
+    <AppContext.Provider value={{ user, favorites, setFavorites, supabase }}>
       {children}
     </AppContext.Provider>
   );
 };
 
 export const useAppContext = () => useContext(AppContext);
-
