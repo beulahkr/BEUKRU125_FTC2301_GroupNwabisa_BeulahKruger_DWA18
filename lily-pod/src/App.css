@@ -4,16 +4,16 @@
   padding: 2rem;
   text-align: center;
 }
-.previewContainer{
+
+.previewContainer {
   display: grid;
   background-color: aquamarine;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   align-self: center;
 
 }
-.router{
+
+.router {
   display: flex;
-  
+
 }
-
-
