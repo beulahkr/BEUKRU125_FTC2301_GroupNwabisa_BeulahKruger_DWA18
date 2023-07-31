@@ -1,0 +1,19 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+.previewContainer{
+  display: grid;
+  background-color: aquamarine;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  align-self: center;
+
+}
+.router{
+  display: flex;
+  
+}
+
+
