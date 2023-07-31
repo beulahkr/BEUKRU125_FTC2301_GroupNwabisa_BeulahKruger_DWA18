@@ -10,6 +10,8 @@ import { createClient } from '@supabase/supabase-js';
   import  {Auth} from '@supabase/auth-ui-react'
   import {ThemeSupa} from '@supabase/auth-ui-shared'
 import supabase from './supabase';
+import PodcastsByGenrePage from './components/PodcastsByGenre';
+import FavoritesPage from './components/FavoritesPage';
 
   function App() {
 
@@ -56,6 +58,9 @@ import supabase from './supabase';
         {/* Root Route */}
        <Route exact path="/" element={<Home previewData={previewData} />} />
        <Route path="/podcast/:id" element={<PodcastPage data={previewData} />} />
+        <Route path="/genres/:genreId" element={<PodcastsByGenrePage  />}/>
+        <Route path="/favorites" component={FavoritesPage} />
+
       </Routes>
     </div>
   );

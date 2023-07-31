@@ -15,7 +15,10 @@ const Navbar = (props) => {
   const handleMenuLinkClick = (link) => {
     // You can handle the click for each menu link here
     console.log(`Clicked on: ${link}`);
-    // Add your logic to handle each menu link click (e.g., navigation or action)
+      if (link === 'Favorites') {
+      // Replace '/favorites' with the actual path for the "Favorites" page
+      props.history.push('/favorites');
+    }
   };
 
   return (
