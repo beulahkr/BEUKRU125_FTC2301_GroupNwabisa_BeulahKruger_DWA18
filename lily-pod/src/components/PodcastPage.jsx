@@ -5,7 +5,7 @@ import { useAppContext } from '../AppProvider';
 import './PodcastPage.css';
 
 
-const PodcastPage = () => {
+const PodcastPage = (props) => {
   
   const { id } = useParams();
   const { user, favorites, setFavorites, supabase } = useAppContext();
@@ -33,32 +33,28 @@ const PodcastPage = () => {
   }, [id]); // Fetch the podcast data whenever the id changes
 
 
-const handleToggleFavorite = async (episodeId) => {
+const handleToggleFavorite = async (episode) => {
   try {
+    const episodeId = episode.id;
+    if (!episodeId) {
+      console.error("Invalid episode data");
+      return;
+    }
+
     if (favorites.includes(episodeId)) {
       // If the episode is already in favorites, remove it
-      await supabase
-        .from('favorites')
-        .delete()
-        .eq('user_id', user?.id)
-        .eq('episode_id', episodeId);
-
-      setFavorites((prevFavorites) =>
-        prevFavorites.filter((id) => id !== episodeId)
-      );
+      await supabase.from("favorites").delete().eq("episode_id", episodeId).single();
+      setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== episodeId));
     } else {
       // If the episode is not in favorites, add it
-      await supabase.from('favorites').insert({
-        user_id: user?.id,
-        episode_id: episodeId,
-      });
-
+      await supabase.from("favorites").insert({ user_id: user.id, episode_id: episodeId });
       setFavorites((prevFavorites) => [...prevFavorites, episodeId]);
     }
   } catch (error) {
-    console.error('Error toggling favorite:', error);
+    console.error("Error toggling favorite:", error);
   }
-}
+};
+
 
 
 
@@ -66,7 +62,7 @@ const handleToggleFavorite = async (episodeId) => {
 
   if (!podcast) {
     // Handle the case when the podcast is not found
-    return <div>Podcast not found</div>;
+    return <div>...Loading...</div>;
   }
 
   return (

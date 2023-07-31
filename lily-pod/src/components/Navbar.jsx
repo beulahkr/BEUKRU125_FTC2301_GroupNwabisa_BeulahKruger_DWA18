@@ -46,7 +46,7 @@ const Navbar = (props) => {
         <span onClick={handleToggleMenu}><img src={menu} alt="Menu" /></span>
         {showMenu && (
           <ul className="menu-dropdown">
-            <li onClick={() => handleMenuLinkClick('Favorites')}>Favorites</li>
+            <Link to="/favorites">Favorites</Link>
             <li onClick={() => handleMenuLinkClick('Categories')}>Categories</li>
             <li onClick={() => handleMenuLinkClick('History')}>History</li>
             <li onClick={() => handleMenuLinkClick('Settings')}>Settings</li>

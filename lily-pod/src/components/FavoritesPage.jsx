@@ -1,6 +1,6 @@
 // FavoritesPage.jsx
 import React, { useEffect, useState } from 'react';
-import { useAppContext } from './AppProvider';
+import { useAppContext } from '../AppProvider'
 
 const FavoritesPage = () => {
   const { user, favorites } = useAppContext();
