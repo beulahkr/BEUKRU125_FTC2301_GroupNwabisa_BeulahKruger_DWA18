@@ -1,49 +1,50 @@
-// FavoritesPage.jsx
 import React, { useEffect, useState } from 'react';
-import { useAppContext } from '../AppProvider'
+import { useAppContext } from '../AppProvider';
+import EpisodeCard from './EpisodeCard';
 
 const FavoritesPage = () => {
-  const { user, favorites } = useAppContext();
-  const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
+  const { user, supabase } = useAppContext();
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    // Fetch user's favorite episodes from the favorites table
     const fetchFavoriteEpisodes = async () => {
-      if (user) {
-        try {
-          // Replace 'your-favorites-table' with the actual name of your favorites table in Supabase
+      try {
+        if (user) {
+          console.log('Fetching favorite episodes for user:', user.id);
+
           const { data, error } = await supabase
-            .from('your-favorites-table')
+            .from('favorites')
             .select('episode_id')
             .eq('user_id', user.id);
 
           if (error) {
             console.error('Error fetching favorite episodes:', error);
           } else {
-            // Assuming 'episode_id' is the unique identifier for episodes in your API
-            const favoriteEpisodes = data.map((item) => item.episode_id);
-            setFavoriteEpisodes(favoriteEpisodes);
+            const favoriteEpisodes = data.map((item) => {
+              // Destructure the episodeId to get podcastId, seasonNumber, and episodeNumber
+              const [podcastId, seasonNumber, episodeNumber] = item.episode_id.split('-');
+              return { podcastId, seasonNumber, episodeNumber };
+            });
+
+            console.log('Favorite episodes:', favoriteEpisodes);
+            setFavorites(favoriteEpisodes);
           }
-        } catch (error) {
-          console.error('Error fetching favorite episodes:', error);
         }
+      } catch (error) {
+        console.error('Error fetching favorite episodes:', error);
       }
     };
 
     fetchFavoriteEpisodes();
-  }, [user]);
+  }, [user, supabase]);
 
   return (
     <div>
-      <h2>Favorite Episodes</h2>
-      <ul>
-        {/* Render the list of favorite episodes */}
-        {favoriteEpisodes.map((episodeId) => (
-          <li key={episodeId}>
-            {/* Render your episode information here based on the episodeId */}
-          </li>
-        ))}
-      </ul>
+      <h2>Favorites</h2>
+      {favorites.map((episodeId) => (
+  <EpisodeCard key={episodeId} episodeId={episodeId} />
+))}
+
     </div>
   );
 };

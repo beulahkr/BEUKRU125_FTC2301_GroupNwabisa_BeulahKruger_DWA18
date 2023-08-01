@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import { useAppContext } from '../AppProvider';
 import './PodcastPage.css';
+import EpisodeCard from './EpisodeCard';
 
 
 const PodcastPage = (props) => {
@@ -33,13 +34,19 @@ const PodcastPage = (props) => {
   }, [id]); // Fetch the podcast data whenever the id changes
 
 
-const handleToggleFavorite = async (episode) => {
-  try {
-    const episodeId = episode.id;
-    if (!episodeId) {
-      console.error("Invalid episode data");
+const handleToggleFavorite = async ( podcastId, seasonNumber, episodeNumber) => {
+   try {
+    const season = podcast?.seasons?.[seasonNumber];
+    const episode = season?.episodes?.[episodeNumber];
+
+    if (!episode) {
+      console.log(podcast)
+      console.log(podcastId +'seasonNumber:' + seasonNumber +' episodeNumber:'+ episodeNumber)
+      console.error("Invalid season or episode number");
       return;
     }
+
+    const episodeId = `${podcastId}-${seasonNumber}-${episodeNumber}`;
 
     if (favorites.includes(episodeId)) {
       // If the episode is already in favorites, remove it
@@ -91,12 +98,20 @@ const handleToggleFavorite = async (episode) => {
               <source src={episode.file} type="audio/mpeg" />
             </audio>
             <button
-              onClick={() => handleToggleFavorite(season.season, episode.episode)}
-              style={{
-                color: favorites.includes(episode.episode) ? 'red' : 'black',
-              }}
-            >
-              {favorites.includes(episode.episode)
+                    onClick={() =>
+                      handleToggleFavorite(
+                        podcast.id,
+                        season.season,
+                        episode.episode
+                      )
+                    }
+                    style={{
+                      color: favorites.includes(episode.episode_id)
+                        ? 'red'
+                        : 'black',
+                    }}
+                  >
+              {favorites.includes(episode.episode_id)
                 ? 'Remove from Favorites'
                 : 'Add to Favorites'}
             </button>
@@ -122,6 +137,7 @@ const handleToggleFavorite = async (episode) => {
   </div>
 ))}
       </div>
+     
     </div>
   );
 };

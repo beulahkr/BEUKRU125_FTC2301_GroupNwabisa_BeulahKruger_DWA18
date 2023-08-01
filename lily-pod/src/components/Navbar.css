@@ -1,47 +1,37 @@
-/* Reset some default styles for the navbar */
-body {
-    margin: 0;
-}
-
 /* Navbar styles */
 .navbar {
     display: flex;
     align-items: center;
-    justify-content: center;
     background-color: #5A8E1A;
-    /* Add your desired background color */
     padding: 10px 20px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 999;
-    /* Ensures it stays on top of other content */
 }
 
 /* Logo styles */
-.logo-container {
-     margin-bottom: -70px;
-}
-
-
 .logo {
-   
-    width:150px;
+width: 150px;
     height: 150px;
     flex-shrink: 0;
     align-self: center;
-    position: relative;
-    
+    /* Add the following styles to center the logo */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Search container styles */
 .search-container {
     display: flex;
-    align-items:center;
-    color:#C8DE7D;
-    padding-bottom: 20px;
+    align-items: center;
+    color: #C8DE7D;
     margin-left: 80px;
+    flex-grow: 1;
+    margin-bottom: 10px;
+    /* Use flex-grow to push the search input to the right */
 }
 
 /* Search icon styles */
@@ -49,39 +39,67 @@ body {
     cursor: pointer;
     font-size: 24px;
     margin-right: 10px;
-    margin-bottom: 12px;
     width: 22px;
-        height: 22px;
-        flex-shrink: 0;
-        position: absolute;
-        left: 60px;
-        bottom: 20px;
+    height: 22px;
 }
 
 /* Search input styles */
 .search-input {
-    font:'IBM Plex Sans', sans-serif;
-width: 157px;
+    font: 'IBM Plex Sans', sans-serif;
+    width: 157px;
     height: 31px;
-    flex-shrink: 0;
     background: var(--white-green, #C8DE7D);
     border: none;
-    position: absolute;
-    left: 90px;
-    bottom: 20px;
-    
+}
+.search-container input{
+  
+        padding: 5px 10px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        border-radius: 20px;
+        background-color: var(--white-green, #C8DE7D);
+        color: #5A8E1A;
+        text-decoration: none;
+        font-size: 14px;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 500;
+}
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+
+    /* Styles for smaller screens, such as phones */
+    .navbar {
+        /* Update padding and font size, for example */
+        padding: 5px 10px;
+        font-size: 16px;
+    }
+
+    .logo {
+        /* Adjust size and position of the logo */
+        width: 100px;
+        height: 100px;
+    }
+
+    .search-container {
+        /* Update the margin or alignment */
+        margin-left: 20px;
+    }
+
+    .search-icon {
+        /* Adjust the size, for example */
+        font-size: 20px;
+    }
+
+    .search-input {
+        /* Adjust the width, for example */
+        width: 100px;
+    }
+
+    /* Add any other styles specific to smaller screens */
 }
 
-/* Menu icon styles */
-.menu-icon {
-    cursor: pointer;
-    font-size: 24px;
-    position: absolute;
-    right: 80px;
-}
-
-.menu-dropdown{
-    background-color: #C8DE7D;
-    color: #5A8E1A;
-    font-family: IBM Plex Sans;
+/* Additional media queries for other screen sizes, if needed */
+@media (max-width: 480px) {
+    /* Styles for even smaller screens, if needed */
 }

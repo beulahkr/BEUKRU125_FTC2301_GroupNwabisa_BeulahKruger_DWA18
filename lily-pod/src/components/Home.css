@@ -1,0 +1,35 @@
+
+.home-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.browse-all{
+   
+   display: flex;
+   flex-wrap: wrap;
+   padding-top: 100px;
+   justify-self: center; 
+   justify-content: left;
+   color: #C8DE7D;
+   align-items: center;
+}
+
+.sort-options{
+   display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+.sort-options select{
+    display: inline-block;
+        padding: 5px 10px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        border-radius: 20px;
+        background-color: var(--white-green, #C8DE7D);
+        color: #5A8E1A;
+        text-decoration: none;
+        font-size: 14px;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 500;
+}

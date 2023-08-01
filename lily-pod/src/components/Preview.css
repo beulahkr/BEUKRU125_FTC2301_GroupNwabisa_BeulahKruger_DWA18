@@ -7,9 +7,11 @@
     margin: 10px;
     max-width: 300px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #5A8E1A;
+    color:#C8DE7D;
 }
 .preview button{
-    color: var(--yellow, #EFA22D);
+    color: #5A8E1A;
 text-align: center;
 font-family: IBM Plex Sans ;
 font-size: 16px;
@@ -28,12 +30,32 @@ background-color: var(--white-green, #C8DE7D);
 .preview h2 {
     font-size: 20px;
     margin-bottom: 5px;
+    color: #C8DE7D;
 }
+
 
 .preview p {
     font-size: 16px;
     margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
 }
+
+.preview p a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-radius: 20px;
+    background-color: var(--white-green, #C8DE7D);
+    color: #5A8E1A;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+}
+
+
 
 .modal {
     position: fixed;
