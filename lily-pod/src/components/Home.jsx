@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Preview from "./Preview";
 import './Home.css'
+import FavoritesPage from "./FavoritesPage";
 
 const Home = () => {
   const [previewData, setPreviewData] = useState([]);
@@ -87,6 +88,9 @@ const sortedPreviews = [...filteredPreviews].sort((a, b) => {
             <Preview data={podcast} />
           </React.Fragment>
         ))}
+      </div>
+      <div>
+        
       </div>
     </div>
   );
