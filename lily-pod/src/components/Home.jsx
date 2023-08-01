@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Preview from "./Preview";
+import Carousel from "./Carousel";
 import './Home.css'
-import FavoritesPage from "./FavoritesPage";
 
 const Home = () => {
   const [previewData, setPreviewData] = useState([]);
@@ -81,16 +81,16 @@ const sortedPreviews = [...filteredPreviews].sort((a, b) => {
         </select>
         </div>
       </div>
-
+      <div className="carousel">
+          <Carousel data={previewData}/>
+        </div>
       <div className="home-container">
+       
         {sortedPreviews.map((podcast) => (
           <React.Fragment key={podcast.id}>
             <Preview data={podcast} />
           </React.Fragment>
         ))}
-      </div>
-      <div>
-        
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { genreMapping } from './genres';
 import Preview from './Preview'; // Import the Preview component
 import Navbar from './Navbar';
+import './PodcastsByGenre.css'
 
 const PodcastsByGenrePage = () => {
   const { genreId } = useParams();
@@ -18,17 +19,21 @@ const PodcastsByGenrePage = () => {
   }, [genreId]);
 
   return (
-    <div>
-        <Navbar/>
-      <h2>{genreMapping[Number(genreId)]} Podcasts</h2>
-      <ul>
-        {/* Map over podcastsByGenre and render the Preview component for each podcast */}
+    <div className="page">
+        <Navbar className="nav" />
+    <div className='header-div'><h2 className=".heading">{genreMapping[Number(genreId)]} Podcasts</h2></div>
+      
+     <div className="previewItems">
+      
+       {/* Map over podcastsByGenre and render the Preview component for each podcast */}
         {podcastsByGenre.map((podcast) => (
-          <li key={podcast.id}>
+          < React.Fragment key={podcast.id}>
             <Preview data={podcast} />
-          </li>
+          </React.Fragment >
         ))}
-      </ul>
+     </div>
+      
+     
     </div>
   );
 };

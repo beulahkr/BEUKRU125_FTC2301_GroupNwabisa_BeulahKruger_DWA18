@@ -1,0 +1,22 @@
+
+.page {
+display: flex;
+flex-direction: column;
+
+}
+
+.heading {
+    display: flex;
+    position: absolute;
+   top:0 ;
+   display: inline-block;
+}
+
+.previewItems {
+    display:flex;
+    flex-wrap: wrap;
+    align-items: center;
+ 
+}
+
+

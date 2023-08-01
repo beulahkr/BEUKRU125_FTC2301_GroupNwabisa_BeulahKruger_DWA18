@@ -13,10 +13,10 @@ const Navbar = (props) => {
   };
 
   const handleMenuLinkClick = (link) => {
-    // You can handle the click for each menu link here
+    //handle the click for each menu link here
     console.log(`Clicked on: ${link}`);
       if (link === 'Favorites') {
-      // Replace '/favorites' with the actual path for the "Favorites" page
+    
       props.history.push('/favorites');
     }
   };

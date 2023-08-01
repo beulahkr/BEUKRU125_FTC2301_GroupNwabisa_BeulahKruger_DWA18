@@ -8,7 +8,7 @@ import Preview from './Preview';
 
 const Carousel = ({ data }) => {
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
